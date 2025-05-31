@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" type="png" href="favicon.png">
+  <link rel="stylesheet" href="Profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Profile</title>
+  <script src="profile.js"></script>
+</head>
+
+
+<body>
+    <nav>
+        <div class="title">FlavorFinds</div>
+        <!--TODO: profile dropdown-->
+        <a href="/">Profile</a>
+        <a href="/restau1">Reviews</a>
+        <a href="home.html">Home</a>
+        <a href="/aboutus">About us</a>
+        <div class="search-container">
+            <form action="/result" method="GET">
+                <input type="text" name="search" id="search" placeholder="Search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+
+        
+
+      </nav>
+
+     
+
+     <div class="profile-container" id="profileContainer">
+        <div class="profile-name" id="profileName">
+          <p>Hello <%= user.username %>!</p>
+        </div>
+    
+        <div class="profile-picture" id="profilePicture">
+          <% if (user.avatar && user.avatar.trim() !== '/uploads') { %>
+            <img src="<%= user.avatar.replace(/\\/g, '/') %>" alt="User Avatar">
+          <% } else { %>
+            <img src="avatar.jpg" alt="Default Avatar">
+          <% } %>
+        </div>        
+    
+        <div class="profile-description-edit">
+          <div class="profile-description" id="profileDescription">
+            <p><%= user.description %></p>
+          </div>
+          <div id="edit-button" itemid="editButton">
+            <a href="/editprofile">
+              <button>Edit Profile</button>
+            </a>
+          </div>
+          <div id="logout-button" itemid="logout-button">
+            <a href="/logout">
+              <button>Log Out</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    
+      <div class="user-review" id="userReview">
+        <div class="review-heading" id="reviewHeading">
+          <span>YOUR RECENT REVIEWS</span>
+          <h1>COMMENT SECTIONS</h1>
+        </div>
+    
+        <div class="mainContainer">
+            <div class="reviewsContainer">
+              <div class="card-column">
+                <% reviews.forEach(review => { %>
+                  <% if (review.username === user.username) { %>
+                    <div class="card">
+                      <div class="info">
+                        <% if (user.avatar && user.avatar.trim() !== '/uploads') { %>
+                          <img src="<%= user.avatar.replace(/\\/g, '/') %>" alt="User Avatar">
+                        <% } else { %>
+                          <img src="avatar.jpg" alt="Default Avatar">
+                        <% } %>
+                        <p>@<%= review.username %></p>
+                      </div>
+                      <div class="description">
+                        <div class="rating">
+                          <p>Establishment: <%= review.establishment %></p>
+                        </div>
+                        <div class="rating">
+                          <p>Rating: <%= review.recommended ? 'Recommended' : 'Not Recommended' %></p>
+                        </div>
+                        <div class="title">
+                          <p><%= review.title %></p>
+                        </div>
+                        <div class="body">
+                          <p><%= review.body %></p>
+                        </div>
+                        <div class="establishmentProfile">
+                          <% if (review && review.image && review.image.trim() !== '') { %>
+                            <img src="<%= review.image.replace(/\\/g, '/') %>">
+                        <% } %>
+                        </div>
+                      </div>
+                      <div class="hepfulUnhelpfulContainer">
+                        <!-- Similar modifications for other review properties -->
+                      </div>
+                      <div class="editDelete">
+                      
+                          <button class="button deleteButton" data-review-id="<%= review._id %>">Delete</button>
+                          <!--<button class="button editButton" data-review-id="<%= review._id %>">Edit</button>-->
+
+                          
+                          <form action="/editReview/<%= review._id %>" method="get">
+                            <button class="button editButton" data-review-id="<%= review._id %>">Edit</button>
+                          </form>
+                
+                        
+                      </div>
+                    </div>
+                  <% } %>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    
+</body>
